@@ -144,8 +144,14 @@ public class AmazonFilesController {
 	}
 	
 	public Path getLocalPathForPdf(MultipartFile file) {
-		Path path = Paths.get("localfiles\\" + file.getOriginalFilename());
+//		Path path = Paths.get("localfiles\\" + file.getOriginalFilename());
+		Path path = Paths.get(file.getOriginalFilename());
 		return path;
+	}
+	
+	public String getPathTOS3Bukcet (Path path) {
+		URL url = s3Client.getUrl(bucketName, path.toString());
+		return url.toString();
 	}
 
 //	public boolean deleteFile(String fileUrl) {

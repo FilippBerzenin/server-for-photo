@@ -30,7 +30,10 @@
 		<h1>Logo</h1>
 	</div>
 
-	<div class="container" align="center" style="margin-top: 30px">	
+	<div class="container" align="center" style="margin-top: 30px">
+		<div align="left">
+			<a href="${prefix}/">Меню</a>
+		</div>	
 			<h1>Создание и отображение мерча</h1>
 		<div class="row align-items-center">
 		<!--List of merchs  -->

@@ -20,10 +20,10 @@ public class PhotoService extends GenericServiceImpl<Photo, PhotoRepository> {
 		super(repository);
 	}
 	
-//	@Autowired
-//	AmazonFilesController controller;
 	@Autowired
-	LocalFilesController controller;
+	AmazonFilesController controller;
+//	@Autowired
+//	LocalFilesController controller;
 
 	public Optional<Photo> add(MultipartFile file) {
 		Photo photo = null;
@@ -43,11 +43,11 @@ public class PhotoService extends GenericServiceImpl<Photo, PhotoRepository> {
 	public Optional<Photo> add(Photo photo, MultipartFile file) {
 		try {
 
-			Path path = controller.getPathForPhoto(photo, file).get();
-			photo.setPathFoPhoto(path.toString().replace("..\\Server-for-photo\\src\\main\\webapp", ""));
+//			Path path = controller.getPathForPhoto(photo, file).get();
+//			photo.setPathFoPhoto(path.toString().replace("..\\Server-for-photo\\src\\main\\webapp", ""));
 			
-//			Path path = controller.copyFileForlocalDirectory(file).get();
-//			photo.setPathFoPhoto(path.toString());
+			Path path = controller.copyFileForlocalDirectory(file).get();
+			photo.setPathFoPhoto(controller.getPathTOS3Bukcet(path));
 			photo.setFile(path.toFile());
 			repository.save(photo);
 		} catch (RuntimeException e) {
