@@ -27,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/api/**");
         web.ignoring().antMatchers("/error");
+        web.ignoring().antMatchers("/merch/delete/**");
     }
 
 	@Bean

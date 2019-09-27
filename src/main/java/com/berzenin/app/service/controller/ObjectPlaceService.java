@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -26,6 +27,9 @@ public class ObjectPlaceService extends GenericServiceImpl<ObjectPlace, ObjectPl
 	@Autowired
 	private PhotoService photoService;
 	
+	@Autowired
+	private MerchService merchService;
+	
 	public Map<LocalDate, List<Photo>> getPhotosByDates(ObjectPlace shops, List<LocalDate> dates) {
 		Map<LocalDate, List<Photo>> photoBydates = shops.getPhotos().stream()
 				.filter(photo -> dates.contains(photo.getDate()))
@@ -41,5 +45,34 @@ public class ObjectPlaceService extends GenericServiceImpl<ObjectPlace, ObjectPl
 		sortedMap.putAll(photoBydates);
 		return sortedMap;
 	}
+
+	public Optional<ObjectPlace> findByName(String name) {
+		return repository.findByName(name);
+	}
+	
+	@Override
+	public void removeById(Long id) {
+		ObjectPlace entity = this.findById(id);
+		ObjectPlace arhiv;
+		if (this.findByName("arhiv").isPresent()) {
+			arhiv = this.findByName("arhiv").get();
+		} else {
+			arhiv = new ObjectPlace();
+			arhiv.setName("arhiv");
+			this.add(arhiv);
+		}
+		entity.getPhotos().forEach(photo -> {
+			photo.setObjectPlace(arhiv);
+			photoService.update(photo);
+		});
+		entity.getMerch().forEach(merch -> {
+			merch.getObjectPlace().remove(entity);
+			merchService.update(merch);
+		});
+		entity.setMerch(null);
+		this.update(entity);
+		super.remove(entity);
+	}
+	
 
 }

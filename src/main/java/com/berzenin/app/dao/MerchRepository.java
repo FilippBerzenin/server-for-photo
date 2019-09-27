@@ -11,5 +11,7 @@ import com.berzenin.app.model.Merch;
 public interface MerchRepository extends JpaRepository<Merch, Long> {
 	
 	Optional<Merch> findByLoginAndPass(String login, String pass);
+	
+	Optional<Merch> findByName(String name);
 
 }

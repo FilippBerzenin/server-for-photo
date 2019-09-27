@@ -28,6 +28,8 @@ public class MerchService extends GenericServiceImpl<Merch, MerchRepository> {
 	@Autowired
 	private PhotoService photoService;
 	
+	private ObjectPlaceService objectPlaceService;
+	
 	public Optional<Merch> getMercByLoginAndPass(String login, String pass) {
 		return repository.findByLoginAndPass(login, pass);
 	}
@@ -53,5 +55,33 @@ public class MerchService extends GenericServiceImpl<Merch, MerchRepository> {
 		sortedMap.putAll(photoBydates);
 		return sortedMap;
 	}
-
+	
+	public Optional<Merch> findByName (String name) {
+		return repository.findByName(name);
+	}
+	
+	@Override
+	public void removeById(Long id) {
+		Merch entity = this.findById(id);
+		Merch arhiv;
+		if (this.findByName("arhiv").isPresent()) {
+			arhiv = this.findByName("arhiv").get();
+		} else {
+			arhiv = new Merch();
+			arhiv.setName("arhiv");
+			arhiv.setLogin("arhiv");
+			arhiv.setPass("arhiv");
+			this.add(arhiv);
+		}
+		entity.getPhotos().forEach(photo -> {
+			photo.setMerch(arhiv);
+			photoService.update(photo);
+		});		
+		entity.getObjectPlace().forEach(shop -> {
+			shop.getMerch().remove(entity);
+		});
+		entity.setObjectPlace(null);
+		this.update(entity);
+		super.remove(entity);
+	}
 }

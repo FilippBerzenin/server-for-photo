@@ -31,7 +31,7 @@ public abstract class GenericServiceImpl<E, R extends JpaRepository<E, Long>> im
 		return repository.findById(id)
 				.orElseThrow(NotFoundException::new);
 	}
-
+	
 	@Override
 	public E add(E entity) {
 		return repository.save(entity);
