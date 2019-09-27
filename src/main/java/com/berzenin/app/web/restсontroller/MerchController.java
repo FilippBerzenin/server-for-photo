@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.annotation.security.PermitAll;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +40,7 @@ public class MerchController extends GenericControllerImpl<Merch, MerchService> 
 		} else return false;
 	}
 	
+	@PermitAll
 	@GetMapping(
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -52,6 +55,7 @@ public class MerchController extends GenericControllerImpl<Merch, MerchService> 
 		} else return merch.get(); 
 	}
 	
+	@PermitAll
 	@GetMapping(
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

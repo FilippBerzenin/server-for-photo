@@ -3,9 +3,10 @@ package com.berzenin.app.web.restсontroller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import javax.annotation.security.PermitAll;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,8 +33,8 @@ public class PhotoController extends GenericControllerImpl<Photo, PhotoService> 
 		super(service);
 	}	
 	
+	@PermitAll
 	@PostMapping(
-//			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = "application/json"
 			)
 	@ResponseStatus(HttpStatus.CREATED)
